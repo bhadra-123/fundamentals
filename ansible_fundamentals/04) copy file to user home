@@ -1,0 +1,6 @@
+sudo cp file_name /home/user_name/
+
+sudo su
+
+ls /home/user_name/
+

@@ -1,0 +1,41 @@
+======================================================================================================================================================================
+***************************
+Option-1 Export and Import
+***************************
+------------------------------
+Step-1: Pulling Docker Images
+------------------------------
+sudo docker pull nginx
+sudo docker pull debian
+
+----------------------------------------------------
+Step-2: Running Docker Container from Docker Images
+----------------------------------------------------
+docker run -itd --name bhadra_nginx nginx:latest
+docker run -itd --name bhadra_debian debian:latest
+
+--------------------------------------------
+Step-3: Exporting container_id to .tar file
+--------------------------------------------
+docker export container_id > image.tar
+
+---------------------------------------
+Step-3: Importing image from .tar file
+---------------------------------------
+docker import - mynginx < image.tar  -->   Importing nginx image from image.tar with name mynginx
+
+======================================================================================================================================================================
+
+***********************
+Option-2 Save and Load
+***********************
+
+1) Saving Docker image as .tar file
+
+docker save -o image.tar nginx
+
+2) Loading Docker image from saved .tar file
+
+docker load < image.tar
+
+======================================================================================================================================================================
