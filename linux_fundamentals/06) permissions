@@ -1,0 +1,123 @@
+================
+File Permissions
+================
+
+1) Absoulte Mode 
+
+2) Symbolic Mode 
+
+u --> user (owner)
+g --> group 
+o --> others 
+
+r --> read
+w --> write 
+x --> execute
+
+ u   g   o
+rwx rwx rwx 
+
+--------------
+777 permission
+--------------
+  u     g     o
+r w x r w x r w x
+4 2 1 4 2 1 4 2 1 
+  7     7     7    
+
+
+**********
+Use-Cases:
+**********
+
+i) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to file by using absolute mode?
+
+ii) How do I grant the user (owner) read and write, the group read-only, and all others read-only to file? 
+
+iii) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to directory by using absolute mode?
+
+iv) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to directory by using absolute mode and this permissions must be associated to all files and directories/sub-directories underneath this directory?
+
+****************
+1) Absolute Mode
+****************
+
+i) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to file by using absolute mode?
+
+A) chmod 740 file_name
+
+ii) How do I grant the user (owner) read and write, the group read-only, and all others read-only to file? 
+
+A) chmod 644 file_name
+
+iii) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to directory by using absolute mode?
+
+A) chmod 740 directory_name
+
+iv) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to directory by using absolute mode and this permissions must be associated to all files and directories/sub-directories underneath this directory?
+
+A) chmod -R 740 directory_name
+
+
+****************
+2) Symbolic Mode 
+****************
+
+i) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to file by using absolute mode?
+
+A) chmod u+r+w+x,g+r-w-o,o-r-w-x file_name (or) chmod u+rwx,g+r-w-o,o-rwx file_name (or) chmod u=+rwx,g=+r-w-o,o=-rwx file_name
+   
+
+ii) How do I grant the user (owner) read and write, the group read-only, and all others read-only to file? 
+
+A) chmod u+r+w-x,g+r-w-o,o+r-w-x file_name (or) chmod u=+r+w-x,g=+r-w-o,o=+r-w-x file_name
+
+iii) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to directory by using absolute mode?
+
+A) chmod u+r+w+x,g+r-w-o,o-r-w-x directory_name (or) chmod u+rwx,g+r-w-o,o-rwx directory_name (or) chmod u=+rwx,g=+r-w-o,o=-rwx directory_name
+
+iv) How do I grant the user (owner) read, write, and execute, the group read-only, and all others no access to directory by using absolute mode and this permissions must be associated to all files and directories/sub-directories underneath this directory?
+
+A) chmod -R u+r+w+x,g+r-w-o,o-r-w-x directory_name (or) chmod -R u+rwx,g+r-w-o,o-rwx directory_name (or) chmod -R u=+rwx,g=+r-w-o,o=-rwx directory_name
+
+******************
+Usage of ugo & rwx
+******************
+
+chmod ugo+rwx file_name --> Adding all permissions to file by combinig user,group and others
+
+chmod ug=+r+w+x,o=-rwx file_name --> Restring others except user and group
+
+
+--------------------------------------------------
+Changing owner(user) & group for files/directories
+--------------------------------------------------
+-----
+Files
+-----
+chown user_name file_name   --> Changing ownership for the file
+
+chown :group_name file_name --> Changing group for the file
+
+chown user_name:group_name file_name --> Changing ownership & group for the file
+
+------
+Groups
+------
+chown user_name directory_name --> Changing ownership for the directory
+
+chown :group_name directory_name --> Changing group for the directory_name
+
+chown user_name:group_name directory --> Changing ownership & group for the directory (Files/Directories permissions under this directory won't effect)
+
+chown -R user_name:group_name directory --> Changing ownership & group for the directory including files and directories underneath it
+
+------------------------------------
+Changing File Permissions using Find
+------------------------------------
+
+find . -type f -name '*.jpg' -exec chmod 600 {} +                          --> Current Directory
+
+find home/azureuser/folder1/ -type f -name '*.png' -exec chmod 600 {} +    --> Different Directory
+
+sudo find /opt/az -type d -name az -exec chmod 775 {} +  --> Changing permissions for 'az' folder and need sudo

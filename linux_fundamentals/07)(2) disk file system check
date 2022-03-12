@@ -1,0 +1,51 @@
+==========================================================================================================================================================================
+==========================================
+Performing File system check on data disks
+==========================================
+-------------------------------------------
+Step-1: View partitions for your first disk
+-------------------------------------------
+
+sudo parted /dev/sda 'print'
+
+sudo parted /dev/sdc 'print'
+
+--------------------------------------------------------------------
+Step-2: Need to unmount the disk before performing file system check
+--------------------------------------------------------------------
+
+sudo umount /dev/sdc
+      (or)
+sudo umount /data01
+
+---------------------------------
+Step-3: Perform file system check
+---------------------------------
+
+--> Repair should be done on Logical volume only
+
+xfs_repair /dev/mapper/data07vg-data071v
+
+xfs_repair -L /dev/mapper/data07vg-data071v  -->  Force
+
+--------------------------
+Step:4 Mount the disk back
+--------------------------
+
+sudo mount /dev/sdc1 /data01
+
+==========================================================================================================================================================================
+
+sudo fsck -n /dev/sdc --> Skip Repair but Print fsck Errors in the Output
+
+sudo fsck -N /dev/sdc --> Do a Dry Run with fsck
+
+sudo fsck -y /dev/sdc --> Fix Detected Errors Automatically with fsck
+
+sudo fsck -f /dev/sdc --> Force fsck to Do a Filesystem Check
+
+fsck -AR --> Run fsck on All Filesystems at Once
+
+sudo fsck -AR -t noext3 -y --> Skip fsck on a Specific Filesystem (except ext3)
+
+==========================================================================================================================================================================

@@ -1,0 +1,140 @@
+============================================
+Attach a data disk to a Linux VM using azcli
+============================================
+
+URL: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/add-disk
+
+=========================
+Attach a new disk to a VM
+=========================
+--------
+command:
+--------
+az vm disk attach -g <resource_group_name> --vm-name <virtual_machine_name> --name <disk_name> --new --size-gb <disk_size>
+
+------
+usage:
+------
+az vm disk attach -g ubuntu-slave_group --vm-name ubuntu-slave --name data01 --new --size-gb 5
+
+-------------
+Find the Disk
+-------------
+
+lsblk -o NAME,HCTL,SIZE,MOUNTPOINT | grep -i "sd"
+
+--------------------
+Partition a new disk
+--------------------
+
+**  If you are attaching a new disk, you need to partition the disk. **
+
+sudo parted /dev/sdc --script mklabel gpt mkpart xfspart xfs 0% 100%
+
+sudo mkfs.xfs /dev/sdc1
+
+sudo partprobe /dev/sdc1
+
+--------------
+Mount the disk
+--------------
+
+sudo mkdir /data01
+
+sudo mount /dev/sdc1 /data01
+
+sudo blkid  -->  To see blkid for /dev/sdc1, where the /data01 will be mounted to
+
+sudo vi /etc/fstab
+
+UUID=646f10cd-1ae8-4700-aebe-9e8bbe8d3b9e  /data01   xfs   defaults,nofail   1   2
+
+-----
+Check
+-----
+
+sudo cat /etc/fstab | grep data01
+
+==================
+Detach a data disk
+==================
+--------
+command:
+--------
+az vm disk detach -g <resource_group_name> --vm-name <virtual_machine_name> -n <disk_name>
+
+------
+usage:
+------
+az vm disk detach -g ubuntu-slave_group --vm-name ubuntu-slave -n data01
+
+=======================
+Attach an existing disk
+=======================
+
+diskId=$(az disk show -g ubuntu-slave_group -n data01 --query 'id' -o tsv)
+
+--------
+command:
+--------
+az vm disk attach -g <resource_group_name> --vm-name <virtual_machine_name> --name $diskId
+
+------
+usage:
+------
+az vm disk attach -g ubuntu-slave_group --vm-name ubuntu-slave --name $diskId
+
+-------------
+Find the Disk
+-------------
+
+lsblk -o NAME,HCTL,SIZE,MOUNTPOINT | grep -i "sd"
+
+--------------------
+Partition a new disk
+--------------------
+
+**  If you are attaching a new disk, you need to partition the disk. **
+
+sudo parted /dev/sdc --script mklabel gpt mkpart xfspart xfs 0% 100%
+
+sudo mkfs.xfs /dev/sdc1
+
+sudo partprobe /dev/sdc1
+
+--------------
+Mount the disk
+--------------
+
+sudo mkdir /data01
+
+sudo mount /dev/sdc1 /data01
+
+sudo blkid  -->  To see blkid for /dev/sdc1, where the /data01 will be mounted to
+
+sudo nano /etc/fstab
+
+UUID=acda8e7a-6798-482f-8a86-63857917943c   /data01   xfs   defaults,nofail   1   2
+
+-----
+Check
+-----
+
+cat /etc/fstab | grep data01
+
+=================
+Un-Mount the disk
+=================
+
+sudo umount /dev/sdc1
+
+
+==========================================================================================================================================================================
+
+=============================================
+Attach a data disk to a Linux VM using Portal
+=============================================
+
+URL: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal
+
+==========================================================================================================================================================================
