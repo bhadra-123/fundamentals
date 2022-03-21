@@ -7,6 +7,12 @@ free -h --> See Available and Consumed Memory on the Machine in GB
 sar -r  --> History of memory usage for the day
 top     --> Dynamic logs
 
+df -h 
+du --max-depth 1
+du --max-depth 1 -h
+cd /
+du --max-depth 1 -h
+
 ==========================================================================================================================================================================
 *******************
 MEMORY & CPU USAGE
